@@ -11,13 +11,13 @@ DATABUS_URI_BASE = "https://dev.databus.dbpedia.org"
 
 
 as.jsonld <- function(context, x) {
-    account_name: str
-    id: str
-    label: str
-    title: str
-    comment: str
-    abstract: str
-    description: str
+#    account_name: str
+#    id: str
+#    label: str
+#    title: str
+#    comment: str
+#    abstract: str
+#    description: str
     
 
     group_uri = getTargetURIGroup(x)
@@ -32,7 +32,7 @@ as.jsonld <- function(context, x) {
 
         )
     )
-    return jsonlite::toJSON(group_data_dict)
+    return(jsonlite::toJSON(group_data_dict))
     
 }
 
@@ -171,18 +171,18 @@ deploy_to_dev_databus <- function(context, api_key, group, dataid) {
     
         message(paste0("Deploying Group}"))
         group = as.jsonld(context, group)
-        resp = requests.put(getTargetURIGroup(group), headers={"X-API-Key": api_key, "Content-Type": "application/json"}, data = group)
+        resp = PUT(getTargetURIGroup(group), headers='{"X-API-Key": api_key, "Content-Type": "application/json"}', data = group)
         
-        if (resp.status_code >= 400) {
+        if (resp["status_code"] >= 400) {
 #            print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 #            print(f"Problematic file:\n {submission_data}")
         }
 
         message(paste0("Deploying DataID"))
         dataid = as.jsonld(context, dataid)
-        resp = requests.put(getTargetURIGroup(dataid), headers={"X-API-Key": api_key, "Content-Type": "application/json"}, data = dataid)
+        resp = PUT(getTargetURIGroup(dataid), headers='{"X-API-Key": api_key, "Content-Type": "application/json"}', data = dataid)
         
-        if (resp.status_code >= 400) {
+        if (resp["status_code"] >= 400) {
 #            print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 #            print(f"Problematic file:\n {submission_data}")
         }
@@ -192,7 +192,7 @@ deploy_to_dev_databus <- function(context, api_key, group, dataid) {
 
 context <- "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld"
 
-account_name <- "giannoupik"
+account_name <- "pik-piam"
 
 group <- "general"
 
@@ -261,4 +261,4 @@ databus_group = DataGroup(
 
 # For the new version deployed to dev.databus.dbpedia.org
 # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-deploy_to_dev_databus(account_name, "aadfc3f3-1f6f-4015-ae8c-9298b8e62d05", databus_group, databus_version)
+deploy_to_dev_databus(account_name, "dfb7c483-a2af-4c79-ae39-b8975d79ccd4", databus_group, databus_version)
